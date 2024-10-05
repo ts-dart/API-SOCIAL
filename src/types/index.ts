@@ -22,3 +22,27 @@ export interface responseService {
   code: number, 
   content: string | { post: Post | null, comments: Post | null } | Post[] | User | User[] | null
 }
+
+export interface PostServiceInterface  {
+  createPost(body: any, id: number | string | undefined): Promise<responseService>;
+  getAllPosts(): Promise<responseService>;
+  getPostById(id: number): Promise<responseService>;
+  getAllPostsByUserId(id: number | string | undefined): Promise<responseService>;
+}
+
+export interface PostAttributes {
+  id: number,
+  title: string
+  content: string;
+  userId: number | string | undefined;
+  parentPostId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface postMethodsInterface extends Post { 
+  findAll: Promise<Post[] | null> | undefined,
+  create: Promise<any>,
+  findByPk: Promise<Post | null>,
+  findOne: Promise<Post | null>
+}

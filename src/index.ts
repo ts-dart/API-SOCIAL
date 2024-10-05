@@ -15,7 +15,7 @@ class Api {
   private routes(): void {
     this.app.get('/test', (_req: Request, res: Response) => res.status(200).json('API responding'))
     this.app.use('/login', router.loginRoute)
-    this.app.use('/post', router.postRoute)
+    this.app.use('/post', router.postRoute) //127.0.0.1:1881/post
     this.app.use('/register', router.registerRoute)
     this.app.use('/user', router.userRoute)
     this.app.use(errorMiddleware)

@@ -1,27 +1,30 @@
 import { Request, Response } from 'express'
-import { RequestWithId, responseService } from '../types'
-import PostService from '../services/postService'
+import { PostServiceInterface, RequestWithId, responseService } from '../types'
 
-class PostController {
-  constructor(private postService: PostService = new PostService()){}
+class PostController<T extends PostServiceInterface> {
+  private postService: T
 
-  public async createPost(req:RequestWithId, res:Response): Promise<void> {
+  constructor(postService: T){
+    this.postService = postService
+  }
+
+  public createPost = async (req:RequestWithId, res:Response): Promise<void> => {
     const response:responseService = await this.postService.createPost(req.body, req.id)
     res.status(response.code).json(response.content)
   }
 
-  public async getAllPosts(req:RequestWithId, res:Response): Promise<void> {
+  public getAllPosts = async (_req:RequestWithId, res:Response): Promise<void> => {
     const response: responseService = await this.postService.getAllPosts()
     res.status(response.code).json(response.content)
   }
 
-  public async getPostById(req:RequestWithId, res:Response): Promise<void> {
+  public getPostById = async (req:RequestWithId, res:Response): Promise<void> => {
     const id: string = String(req.params.id)
     const response:responseService = await this.postService.getPostById(Number.parseInt(id))
     res.status(response.code).json(response.content)
   }
 
-  public async getAllPostsByUserId(req:RequestWithId, res:Response): Promise<void> {
+  public getAllPostsByUserId = async (req:RequestWithId, res:Response): Promise<void> => {
     const response:responseService = await this.postService.getAllPostsByUserId(req.id)
     res.status(200).json(response.content)
   }

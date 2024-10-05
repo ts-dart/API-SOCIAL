@@ -1,8 +1,15 @@
+import { PostServiceInterface, responseService, PostAttributes } from '../types'
 import Post from '../database/models/post'
-import { responseService } from '../types'
 
-export default class PostService {
-  public async createPost(postBody: any, id: number | string | undefined ): Promise<responseService> {
+//TIPO GENERICO NAO FUNCIONAL NESSA CLASSE. PASSAR A CLASSE Post DE postRouter PARA postService NAO FUNCIONA OS METODOS DA CLASSE NAO SAO RECONHECIDOS
+export default class PostService<T> implements PostServiceInterface {
+  private post: Post
+
+  constructor(post: Post) {
+    this.post = post
+  }
+
+  public createPost = async (postBody: Post, id: number | string | undefined ): Promise<responseService> => {
     await Post.create({
       content: postBody.content,
       userId: id,
@@ -14,20 +21,21 @@ export default class PostService {
     return {code: 201, content: 'Post sent successfully'}
   }
 
-  public async getPostById(idQuery: number): Promise<responseService> {
+  public getPostById = async (idQuery: number): Promise<responseService> => {
     const post: Post | null = await Post.findByPk(idQuery)
     const comments: Post | null = await Post.findOne({ where: { parentPostId: post?.id } })
 
     return { code: 200, content: { post, comments } }
   }
 
-  public async getAllPosts(): Promise<responseService> {
+  public getAllPosts = async (): Promise<responseService> => {
     const posts: Post[] = await Post.findAll()
     return { code: 200, content: posts }
   }
 
-  public async getAllPostsByUserId(id: number | string | undefined ): Promise<responseService> {
+  public getAllPostsByUserId = async (id: number | string | undefined ): Promise<responseService> => {
     const posts: Post[] = await Post.findAll({where: {userId: id}})
     return { code: 200, content: posts }
   }
+
 }
