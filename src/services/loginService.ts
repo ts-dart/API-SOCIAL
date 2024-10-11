@@ -5,12 +5,18 @@ import { responseService } from '../types'
 
 export default class LoginService {
   private async loginHandle(inputType: string, inputValue: string, password: string): Promise<responseService> {
+    //acredito que o poroblema esteja relacionado somente ao fazer login com admin, o bcrypt tenta descirptografar uma senha que nao esta criptografada no db
+    if ()
+
     const userAccount = await User.findOne({ where: { [inputType]: inputValue } })
 
     if (userAccount === null) return { content: 'User not found', code: 404 }
 
     const { password:pass } = userAccount?.dataValues
     const descriptPassword = await bcrypt.compare(password, pass)
+
+    console.log(password, pass, descriptPassword)
+
     if (!descriptPassword) return { content: 'Incorrect password', code: 401 }
 
     return this.createToken(userAccount)
@@ -25,7 +31,6 @@ export default class LoginService {
 
   public async loginUser(userBody: any): Promise<responseService> {
     const { loginType } = userBody
-    
     switch(loginType) {
       case 'email':
         return await this.loginHandle(loginType, userBody.email, userBody.password)
