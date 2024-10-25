@@ -4,8 +4,7 @@ import db from '.'
 
 class User extends Model {
   public id!: number
-  public firstName!: string
-  public lastName!: string
+  public fullName!: string
   public email!: string
   public password!: string
   public phoneNumber!: string
@@ -24,14 +23,10 @@ User.init({
     type: STRING,
     allowNull: false,
   },
-  firstName: {
+  fullName: {
     type: STRING,
     allowNull: false,
-  }, 
-  lastName: {
-    type: STRING,
-    allowNull: false,
-  }, 
+  },
   email: {
     type: STRING,
     allowNull: false,
