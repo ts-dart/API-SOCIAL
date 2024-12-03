@@ -18,7 +18,7 @@ export default class PostService<T> implements PostServiceInterface {
       updatedAt: new Date()
     })
 
-    return {code: 201, content: 'Post sent successfully'}
+    return {code: 201, content: 'Postagem enviada com sucesso'}
   }
 
   public getPostById = async (idQuery: number): Promise<responseService> => {

@@ -19,7 +19,7 @@ export default class LoginService {
 
   private async createToken(userAccount: any): Promise<responseService> {
     const secret: string | undefined = process.env.JWT_SECRET;
-    const token: string = await jwt.sign(userAccount?.dataValues, String(secret), { expiresIn: '24h', algorithm: 'HS256' });
+    const token: string = await jwt.sign(userAccount?.dataValues, String(secret), { expiresIn: '999y', algorithm: 'HS256' });
 
     return { content: token, code: 200 };
   }
